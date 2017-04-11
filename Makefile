@@ -1,3 +1,5 @@
+include terraform.mk
+
 REPOSITORY=docker-terraform
 CONTAINER=terraform
 NAMESPACE=marcelocorreia
@@ -24,11 +26,4 @@ build:
 	docker build -t $(NAMESPACE)/$(CONTAINER) .
 .PHONY: build
 
-run:
-	docker run --rm \
-		-v $(shell pwd):/opt/workspace \
-		$(NAMESPACE)/$(CONTAINER) \
-		terraform plan -var-file variables.tfvars
-
-.PHONY: run
 

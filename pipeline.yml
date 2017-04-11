@@ -4,7 +4,7 @@ resources:
     source:
       uri: {{git_repo_url}}
       branch: master
-      paths: [docker/terraform/Dockerfile]
+      paths: [Dockerfile]
       private_key: {{git_private_key}}
       username: {{github_user}}
 
@@ -24,7 +24,7 @@ resources:
       initial_version: 0.0.1
       uri: {{git_repo_url}}
       branch: version
-      file: docker/terraform/version
+      file: version
       private_key: {{git_private_key}}
       username: {{github_user}}
 

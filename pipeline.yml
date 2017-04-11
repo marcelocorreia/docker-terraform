@@ -46,7 +46,7 @@ jobs:
           bump: patch
       - put: docker_image
         params:
-          build: dockerfile/docker/terraform
+          build: dockerfile
           tag: resource_version/version
           tag_as_latest: true
       - put: resource_version

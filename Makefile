@@ -2,7 +2,7 @@ REPOSITORY=docker-terraform
 CONTAINER=terraform
 NAMESPACE=marcelocorreia
 
-pipeline:
+set-pipeline:
 	fly -t main set-pipeline \
 		-n -p $(CONTAINER) \
 		-c pipeline.yml \
@@ -14,7 +14,7 @@ pipeline:
         -v git_branch=master
 
 	fly -t main unpause-pipeline -p $(CONTAINER)
-.PHONY: pipeline
+.PHONY: set-pipeline
 
 destroy-pipeline:
 	fly -t main destroy-pipeline \
@@ -25,6 +25,10 @@ build:
 .PHONY: build
 
 run:
-	docker run --rm $(NAMESPACE)/$(CONTAINER)
+	docker run --rm \
+		-v $(shell pwd):/opt/workspace \
+		$(NAMESPACE)/$(CONTAINER) \
+		terraform plan -var-file variables.tfvars
+
 .PHONY: run
 

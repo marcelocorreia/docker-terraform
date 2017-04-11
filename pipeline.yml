@@ -1,0 +1,58 @@
+resources:
+  - name: dockerfile
+    type: git
+    source:
+      uri: {{git_repo_url}}
+      branch: master
+      paths: [docker/terraform/Dockerfile]
+      private_key: {{git_private_key}}
+      username: {{github_user}}
+
+  - name: docker_image
+    type: docker-image
+    source:
+      repository: {{container_fullname}}
+      email: {{docker_mail}}
+      username: {{docker_user}}
+      password: {{docker_password}}
+      cache: true
+
+  - name: resource_version
+    type: semver
+    source:
+      driver: git
+      initial_version: 0.0.1
+      uri: {{git_repo_url}}
+      branch: version
+      file: docker/terraform/version
+      private_key: {{git_private_key}}
+      username: {{github_user}}
+
+  - name: github_release
+    type: github-release
+    source:
+      user: {{github_user}}
+      repository: {{git_repo}}
+      access_token: {{github_token}}
+
+jobs:
+  - name: {{container_name}}
+    serial: true
+    plan:
+      - get: dockerfile
+        trigger: true
+      - put: resource_version
+        params:
+          bump: patch
+      - put: docker_image
+        params:
+          build: dockerfile/docker/terraform
+          tag: resource_version/version
+          tag_as_latest: true
+      - put: resource_version
+        params:
+          file: resource_version/version
+      - put: github_release
+        params:
+          name: resource_version/version
+          tag: resource_version/version

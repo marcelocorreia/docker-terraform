@@ -8,7 +8,5 @@ RUN curl https://releases.hashicorp.com/terraform/0.9.2/terraform_0.9.2_linux_am
 RUN unzip terraform_0.9.2_linux_amd64.zip -d /usr/local/bin
 RUN mkdir -p /opt/workspace
 RUN rm /var/cache/apk/*
-
 WORKDIR /opt/workspace
-
 CMD terraform version

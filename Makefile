@@ -6,10 +6,10 @@ NAMESPACE=marcelocorreia
 VERSION=0.9.3
 
 set-pipeline:
-	fly -t main set-pipeline \
+	fly -t dev set-pipeline \
 		-n -p $(CONTAINER) \
 		-c pipeline.yml \
-		-l /home/marcelo/.ssh/ci-credentials.yml \
+		-l $(HOME)/.ssh/ci-credentials.yml \
 		-v git_repo_url=git@github.com:$(NAMESPACE)/$(REPOSITORY).git \
         -v container_fullname=$(NAMESPACE)/$(CONTAINER) \
         -v container_name=$(CONTAINER) \
@@ -17,7 +17,7 @@ set-pipeline:
         -v git_branch=master \
         -v release_version=$(VERSION)
 
-	fly -t main unpause-pipeline -p $(CONTAINER)
+	fly -t dev unpause-pipeline -p $(CONTAINER)
 .PHONY: set-pipeline
 
 destroy-pipeline:

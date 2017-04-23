@@ -3,6 +3,7 @@ include terraform.mk
 REPOSITORY=docker-terraform
 CONTAINER=terraform
 NAMESPACE=marcelocorreia
+VERSION=0.9.3
 
 set-pipeline:
 	fly -t main set-pipeline \
@@ -13,7 +14,8 @@ set-pipeline:
         -v container_fullname=$(NAMESPACE)/$(CONTAINER) \
         -v container_name=$(CONTAINER) \
 		-v git_repo=$(REPOSITORY) \
-        -v git_branch=master
+        -v git_branch=master \
+        -v release_version=$(VERSION)
 
 	fly -t main unpause-pipeline -p $(CONTAINER)
 .PHONY: set-pipeline

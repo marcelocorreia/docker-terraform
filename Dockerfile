@@ -9,4 +9,5 @@ RUN unzip terraform_0.9.3_linux_amd64.zip -d /usr/local/bin
 RUN mkdir -p /opt/workspace
 RUN rm /var/cache/apk/*
 WORKDIR /opt/workspace
+
 CMD terraform version

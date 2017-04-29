@@ -1,17 +1,22 @@
 # marcelocorreia/terraform
 
-### Usage
+Docker image with [Hashicorp Terraform](https://www.terraform.io) + [AWS CLI](https://aws.amazon.com/cli/)
+
+## INFO
+- Workdir is set to /opt/workspace
+- Github: [https://github.com/marcelocorreia/docker-terraform](https://github.com/marcelocorreia/docker-terraform)
+- [Integration](#) with [Concourse CI](http://concourse.ci/) 
+ 
+## Usage
 ```bash
 $> docker run --rm -v $(shell pwd):/opt/workspace \
    		marcelocorreia/terraform \
    		terraform [--version] [--help] <command> [args]
 ```
 
-### INFO
-Workdir is set to /opt/workspace
 
 
-#### Example
+## Example
 ```bash
 $> docker run --rm -v $(shell pwd):/opt/workspace \
    		marcelocorreia/terraform \
@@ -20,7 +25,7 @@ $> docker run --rm -v $(shell pwd):/opt/workspace \
    		-var aws_secret_key=${aws_secret_access_key}
 ```
 
-#### Makefile example
+## Makefile example
 ```makefile
 # VARS
 TF_IMAGE?=marcelocorreia/terraform:latest
@@ -72,3 +77,25 @@ define terraform
 endef
 
 ```
+
+### [Check the Concourse CI Pipeline used to build this image](https://github.com/marcelocorreia/docker-terraform/blob/master/pipeline.yml) 
+
+#### Concourse Build Configuration Example
+
+```yaml
+platform: linux
+
+image_resource:
+  type: docker-image
+  source:
+    repository: marcelocorreia/terraform
+    tag: 'latest'
+
+inputs:
+- name: terraform-repo
+
+run:
+  path: terraform
+  args: [plan]
+```
+

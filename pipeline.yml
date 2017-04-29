@@ -36,7 +36,7 @@ resources:
       access_token: {{github_token}}
 
 jobs:
-  - name: {{container_name}}-release
+  - name: docker-terraform-release
     serial: true
     plan:
       - get: dockerfile

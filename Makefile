@@ -27,10 +27,14 @@ set-pipeline:
 	fly -t $(CI_TARGET) watch -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
 .PHONY: set-pipeline
 
-destroy-pipeline:
-	fly -t $(CI_TARGET) destroy-pipeline \
-	-p $(CONTAINER)
 
+watch-pipeline:
+	fly -t $(CI_TARGET) watch -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
+.PHONY: watch-pipeline
+
+destroy-pipeline:
+	fly -t $(CI_TARGET) destroy-pipeline -p $(CONTAINER)
+.PH
 docs:
 	grip -b
 

@@ -3,7 +3,7 @@ include terraform.mk
 REPOSITORY=docker-terraform
 CONTAINER=terraform
 NAMESPACE=marcelocorreia
-VERSION=0.9.3
+VERSION=0.9.4
 
 set-pipeline:
 	fly -t dev set-pipeline \

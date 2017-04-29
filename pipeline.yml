@@ -36,7 +36,7 @@ resources:
       access_token: {{github_token}}
 
 jobs:
-  - name: {{container_name}}
+  - name: {{container_name}}-release
     serial: true
     plan:
       - get: dockerfile

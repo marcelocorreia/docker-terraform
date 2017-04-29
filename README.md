@@ -7,6 +7,10 @@ $> docker run --rm -v $(shell pwd):/opt/workspace \
    		terraform [--version] [--help] <command> [args]
 ```
 
+### INFO
+Workdir is set to /opt/workspace
+
+
 #### Example
 ```bash
 $> docker run --rm -v $(shell pwd):/opt/workspace \
@@ -18,33 +22,53 @@ $> docker run --rm -v $(shell pwd):/opt/workspace \
 
 #### Makefile example
 ```makefile
-plan:
+# VARS
+TF_IMAGE?=marcelocorreia/terraform:latest
+VARS_FILE?=variables.tfvars
+
+# TF
+tf-plan:
 	$(call terraform, plan)
-.PHONY: plan
+.PHONY: tf-plan
 
-apply:
+tf-apply:
 	$(call terraform, apply)
-.PHONY: apply
+.PHONY: tf-apply
 
-destroy:
+tf-destroy:
 	$(call terraform, destroy)
-.PHONY: destroy
+.PHONY: tf-destroy
 
-refresh:
+tf-refresh:
 	$(call terraform, refresh)
-.PHONY: refresh
+.PHONY: tf-refresh
 
-show:
-	@docker run --rm -v $(shell pwd):/opt/workspace \
-    	marcelocorreia/terraform \
-    	terraform show
-.PHONY: show
+tf-show:
+	$(call terraform, show)
+.PHONY: tf-show
 
+tf-shell:
+	@docker run --rm -it -v $(shell pwd):/opt/workspace \
+    		$(TF_IMAGE)\
+    		bash
+.PHONY: tf-shell
+
+tf-state-list:
+	$(call terraform, state list)
+.PHONY: tf-show
+
+# DOCKER
+tf-image-update:
+	docker pull $(TF_IMAGE)
+.PHONY: tf-image-update
+
+# ROUTINES
 define terraform
 	@docker run --rm -v $(shell pwd):/opt/workspace \
-		marcelocorreia/terraform \
-		terraform $1 -var-file variables.tfvars \
+		$(TF_IMAGE)\
+		terraform $1 -var-file $(VARS_FILE) \
 		-var aws_access_key=${aws_access_key_id} \
 		-var aws_secret_key=${aws_secret_access_key}
 endef
+
 ```

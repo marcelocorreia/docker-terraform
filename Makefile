@@ -5,6 +5,10 @@ CONTAINER=terraform
 NAMESPACE=marcelocorreia
 VERSION=0.9.4
 
+build:
+	docker build -t $(NAMESPACE)/$(CONTAINER):latest .
+.PHONY: build
+
 set-pipeline:
 	fly -t dev set-pipeline \
 		-n -p $(CONTAINER) \
@@ -18,14 +22,17 @@ set-pipeline:
         -v release_version=$(VERSION)
 
 	fly -t dev unpause-pipeline -p $(CONTAINER)
+	fly -t dev trigger-job -j $(CONTAINER)/docker-terraform
+	fly -t dev watch -j $(CONTAINER)/docker-terraform
 .PHONY: set-pipeline
 
 destroy-pipeline:
 	fly -t main destroy-pipeline \
 	-p $(CONTAINER)
 
-build:
-	docker build -t $(NAMESPACE)/$(CONTAINER) .
-.PHONY: build
+docs:
+	grip -b
+
+
 
 

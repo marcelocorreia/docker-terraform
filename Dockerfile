@@ -21,5 +21,4 @@ ENV TZ="Australia/Sydney"
 
 WORKDIR /opt/workspace
 
-#
 CMD terraform version

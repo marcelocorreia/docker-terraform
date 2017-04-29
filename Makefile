@@ -33,8 +33,9 @@ watch-pipeline:
 .PHONY: watch-pipeline
 
 destroy-pipeline:
-	fly -t $(CI_TARGET) destroy-pipeline -p $(CONTAINER)
-.PH
+	fly -t $(CI_TARGET) destroy-pipeline -p $(PIPELINE_NAME)
+.PHONY: destroy-pipeline
+
 docs:
 	grip -b
 

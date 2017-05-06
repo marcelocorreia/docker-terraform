@@ -1,5 +1,5 @@
 resources:
-  - name: dockerfile
+  - name: docker-repo
     type: git
     source:
       uri: {{git_repo_url}}
@@ -17,17 +17,6 @@ resources:
       password: {{docker_password}}
       cache: true
 
-  - name: resource_version
-    type: semver
-    source:
-      driver: git
-      initial_version: 0.9.2
-      uri: {{git_repo_url}}
-      branch: version
-      file: version
-      private_key: {{git_private_key}}
-      username: {{github_user}}
-
   - name: github_release
     type: github-release
     source:
@@ -39,20 +28,14 @@ jobs:
   - name: docker-terraform-release
     serial: true
     plan:
-      - get: dockerfile
+      - get: docker-repo
         trigger: true
-      - put: resource_version
-        params:
-          bump: patch
       - put: docker_image
         params:
-          build: dockerfile
-          tag: resource_version/version
+          build: docker-repo
+          tag: docker-repo/version
           tag_as_latest: true
-      - put: resource_version
-        params:
-          file: resource_version/version
       - put: github_release
         params:
-          name: resource_version/version
-          tag: resource_version/version
+          name: docker-repo/version
+          tag: docker-repo/version

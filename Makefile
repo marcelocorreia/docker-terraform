@@ -3,9 +3,10 @@ include terraform.mk
 REPOSITORY=docker-terraform
 CONTAINER=terraform
 NAMESPACE=marcelocorreia
-VERSION=0.9.4
+VERSION=0.9.5
 PIPELINE_NAME=$(REPOSITORY)-release
 CI_TARGET=dev
+
 build:
 	docker build -t $(NAMESPACE)/$(CONTAINER):latest .
 .PHONY: build

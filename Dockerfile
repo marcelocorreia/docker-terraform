@@ -4,7 +4,7 @@ ARG tf_version="0.9.5"
 RUN apk update
 RUN apk upgrade
 RUN apk add ca-certificates && update-ca-certificates
-RUN apk add --no-cache --update curl unzip bash python py-pip git openssh
+RUN apk add --no-cache --update curl unzip bash python py-pip git openssh make
 RUN apk add --update tzdata
 RUN pip install --upgrade pip
 RUN pip install awscli

@@ -1,24 +1,47 @@
 # marcelocorreia/terraform
 
-Docker image with [Hashicorp Terraform](https://www.terraform.io) + [AWS CLI](https://aws.amazon.com/cli/)
+Docker image with [Hashicorp Terraform](https://www.terraform.io) + [AWS CLI](https://aws.amazon.com/cli/) + Goodies
 
+
+ 
+### Packages
+    - ca-certificates 
+    - update-ca-certificates
+    - curl
+    - unzip 
+    - bash 
+    - python 
+    - py-pip 
+    - openssh 
+    - git 
+    - make 
+    - tzdata
+    - awscli (via PIP)  
+ 
 ## INFO
 - Workdir is set to /opt/workspace
 - Github: [https://github.com/marcelocorreia/docker-terraform](https://github.com/marcelocorreia/docker-terraform)
 - [Integration](#) with [Concourse CI](http://concourse.ci/) 
- 
+
 ## Usage
 ```bash
-$> docker run --rm -v $(shell pwd):/opt/workspace \
+$> docker run --rm -v $(pwd):/opt/workspace \
+   		marcelocorreia/terraform \
+   		terraform [--version] [--help] <command> [args]
+```
+
+## Setting timezone
+```bash
+$> docker run --rm -v $(pwd):/opt/workspace \
+        -e TZ=Australia/Sydney \
    		marcelocorreia/terraform \
    		terraform [--version] [--help] <command> [args]
 ```
 
 
-
 ## Example
 ```bash
-$> docker run --rm -v $(shell pwd):/opt/workspace \
+$> docker run --rm -v $(pwd):/opt/workspace \
    		marcelocorreia/terraform \
    		terraform $1 -var-file variables.tfvars \
    		-var aws_access_key=${aws_access_key_id} \
@@ -96,6 +119,9 @@ inputs:
 
 run:
   path: terraform
-  args: [plan]
+  args: 
+  - plan
+  - -var-file
+  - variables.tfvars
 ```
 

@@ -1,6 +1,6 @@
 FROM alpine:3.5
 MAINTAINER marcelo correia <marcelocorreia@starvisitor.com>
-ARG tf_version="0.9.5"
+ARG tf_version="0.9.6"
 RUN apk update
 RUN apk upgrade
 RUN apk add ca-certificates && update-ca-certificates

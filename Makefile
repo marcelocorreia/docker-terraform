@@ -3,7 +3,7 @@ include terraform.mk
 REPOSITORY=docker-terraform
 CONTAINER=terraform
 NAMESPACE=marcelocorreia
-VERSION=0.9.6
+VERSION=$(shell cat version)
 PIPELINE_NAME=$(REPOSITORY)-release
 CI_TARGET=dev
 

@@ -17,6 +17,7 @@ Docker image with [Hashicorp Terraform](https://www.terraform.io) + [AWS CLI](ht
     - make 
     - tzdata
     - awscli (via PIP)  
+    - jq
  
 ## INFO
 - Workdir is set to /opt/workspace

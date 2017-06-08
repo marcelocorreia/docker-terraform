@@ -8,10 +8,16 @@ PIPELINE_NAME=$(REPOSITORY)-release
 CI_TARGET=dev
 
 build:
+	cat Dockerfile | sed  's/ARG version=".*"/ARG version="$(VERSION)"/' > /tmp/Dockerfile.tmp
+	cat /tmp/Dockerfile.tmp > Dockerfile
+	rm /tmp/Dockerfile.tmp
 	docker build -t $(NAMESPACE)/$(CONTAINER):latest .
 .PHONY: build
 
-set-pipeline:
+git-push:
+	git add .; git commit -m "Pipeline WIP"; git push
+
+set-pipeline: git-push
 	fly -t $(CI_TARGET) set-pipeline \
 		-n -p $(PIPELINE_NAME) \
 		-c pipeline.yml \

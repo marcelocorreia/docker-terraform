@@ -1,4 +1,4 @@
-FROM alpine:3.5
+FROM alpine:3.6
 MAINTAINER marcelo correia <marcelocorreia@starvisitor.com>
 ARG tf_version="0.9.6"
 RUN apk update
@@ -14,6 +14,7 @@ RUN apk add --no-cache --update \
     openssh \
     make \
     jq
+RUN apk add dos2unix --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 RUN apk add --update tzdata
 RUN pip install --upgrade pip
 RUN pip install awscli

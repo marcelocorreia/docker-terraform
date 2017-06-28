@@ -13,12 +13,10 @@ resources:
       branch: master
       private_key: {{git_private_key}}
       username: {{github_user}}
-
   - name: slack-alert
     type: slack-notification
     source:
       url: {{slack_webook}}
-
   - name: docker_image
     type: docker-image
     source:
@@ -27,7 +25,6 @@ resources:
       username: {{docker_user}}
       password: {{docker_password}}
       cache: true
-
   - name: github_release
     type: github-release
     source:

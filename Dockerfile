@@ -15,7 +15,7 @@ RUN apk add --no-cache --update \
     make \
     libffi-dev \
     jq
-RUN apk add dos2unix --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
+#RUN apk add dos2unix --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/testing/ --allow-untrusted
 RUN apk add --update tzdata
 RUN pip install --upgrade pip
 RUN pip install awscli

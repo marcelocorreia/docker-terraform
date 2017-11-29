@@ -36,8 +36,8 @@ set-pipeline: git-push
         -v release_version=$(VERSION)
 
 	fly -t $(FLY_TARGET) unpause-pipeline -p $(PIPELINE_NAME)
-	fly -t $(FLY_TARGET) trigger-job -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
-	fly -t $(FLY_TARGET) watch -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
+#	fly -t $(FLY_TARGET) trigger-job -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
+#	fly -t $(FLY_TARGET) watch -j $(PIPELINE_NAME)/$(PIPELINE_NAME)
 .PHONY: set-pipeline
 
 

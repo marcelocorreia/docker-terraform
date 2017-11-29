@@ -15,6 +15,7 @@ RUN apk add --no-cache --update \
     make \
     libffi-dev \
     jq
+
 RUN apk add dos2unix --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ --allow-untrusted
 RUN apk add --update tzdata
 RUN pip install --upgrade pip

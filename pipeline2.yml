@@ -34,7 +34,7 @@ jobs:
     serial: true
     plan:
       - get: terraform_release
-        version: latest
+        version: {tag: 'latest'}
         trigger: true
       - get: docker-repo
         trigger: true

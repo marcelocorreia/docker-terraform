@@ -25,8 +25,8 @@ git-push:
 
 set-pipeline: git-push
 	fly -t $(FLY_TARGET) set-pipeline \
-		-n -p $(PIPELINE_NAME) \
-		-c pipeline.yml \
+		-n -p $(PIPELINE_NAME)2 \
+		-c pipeline2.yml \
 		-l $(HOME)/.ssh/ci-credentials.yml \
 		-v git_repo_url=git@github.com:$(NAMESPACE)/$(REPOSITORY).git \
         -v container_fullname=$(NAMESPACE)/$(CONTAINER) \

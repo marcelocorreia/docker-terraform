@@ -1,23 +1,50 @@
 include terraform.mk
+-include localdev.mk
 
-REPOSITORY=docker-terraform
-CONTAINER=terraform
-NAMESPACE=marcelocorreia
-VERSION=$(shell cat version)
-PIPELINE_NAME=$(REPOSITORY)-release
-FLY_TARGET=dev
+REPOSITORY := docker-terraform
+CONTAINER := terraform
+NAMESPACE := marcelocorreia
+VERSION := $(shell cat version)
+PIPELINE_NAME := $(REPOSITORY)-release
+FLY_TARGET := dev
+ALPINE_VERSION := 3.7
+
+GITHUB_USER := hashicorp
+
+ifdef GITHUB_TOKEN
+TOKEN_FLAG := -H "Authorization: token $(GITHUB_TOKEN)"
+endif
+
+get-last-release:
+	@OUT=$(shell curl -s $(TOKEN_FLAG) https://api.github.com/repos/$(GITHUB_USER)/$(CONTAINER)/tags | jq ".[]|.name" | head -n1 | sed 's/\"//g' | sed 's/v*//g') && \
+	echo $${OUT}
+
+check-new-version:
+	@LAST=$(shell make get-last-release) && \
+	 if [ $(VERSION) != $$LAST ];then \
+	 	printf "Updating $(CONTAINER) :: $(VERSION) -> $$LAST"; \
+		echo "$$LAST" > version; \
+		$(MAKE) update-version; \
+	else \
+	 	printf "Container $(CONTAINER) already up to date - Version: $(VERSION)"; \
+	fi
 
 
 pipeline-login:
 	fly -t $(FLY_TARGET) login -n $(FLY_TARGET) -c https://ci.correia.io
 
 update-version:
-	cat Dockerfile | sed  's/ARG tf_version=".*"/ARG tf_version="$(VERSION)"/' > /tmp/Dockerfile.tmp
-	cat /tmp/Dockerfile.tmp > Dockerfile
-	rm /tmp/Dockerfile.tmp
+	@cat Dockerfile | \
+	 	sed  's/ARG tf_version=".*"/ARG tf_version="$(VERSION)"/' | \
+	 	sed  's/^FROM.*/FROM alpine:$(ALPINE_VERSION)/' \
+	 		 > /tmp/Dockerfile.tmp
+
+	@cat /tmp/Dockerfile.tmp > Dockerfile
+	@rm /tmp/Dockerfile.tmp
 
 build:
 	docker build -t $(NAMESPACE)/$(CONTAINER):latest .
+	docker build -t $(NAMESPACE)/$(CONTAINER):$(VERSION) .
 .PHONY: build
 
 git-push:

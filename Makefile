@@ -1,12 +1,15 @@
 include terraform.mk
 -include localdev.mk
 
+CONCOURSE_EXTERNAL_URL ?= http://localhost:8080
+CI_CREDENTIALS ?= $(HOME)/.ssh/ci-credentials.yml
+
 REPOSITORY := docker-terraform
 CONTAINER := terraform
 NAMESPACE := marcelocorreia
 VERSION := $(shell cat version)
 PIPELINE_NAME := $(REPOSITORY)-release
-FLY_TARGET := dev
+FLY_TARGET ?= main
 ALPINE_VERSION := 3.7
 
 GITHUB_USER := hashicorp
@@ -31,7 +34,7 @@ check-new-version:
 
 
 pipeline-login:
-	fly -t $(FLY_TARGET) login -n $(FLY_TARGET) -c https://ci.correia.io
+	fly -t $(FLY_TARGET) login -n $(FLY_TARGET) -c $(CONCOURSE_EXTERNAL_URL)
 
 update-version:
 	@cat Dockerfile | \
@@ -50,7 +53,7 @@ build:
 git-push:
 	git add .; git commit -m "Pipeline WIP"; git push
 
-set-pipeline: git-push
+pipeline: git-push
 	fly -t $(FLY_TARGET) set-pipeline \
 		-n -p $(PIPELINE_NAME) \
 		-c pipeline.yml \

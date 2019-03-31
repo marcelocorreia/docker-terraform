@@ -1,29 +1,32 @@
-FROM alpine:3.7
-MAINTAINER marcelo correia <marcelo@correia.io>
-ARG tf_version="0.11.7"
-RUN apk update
-RUN apk upgrade
-RUN apk add ca-certificates && update-ca-certificates
-RUN apk add --no-cache --update \
-    curl \
-    unzip \
-    bash \
-    python \
-    py-pip \
-    git \
-    openssh \
-    make \
-    libffi-dev \
-    jq
+FROM hashicorp/terraform
 
-RUN apk add dos2unix --update-cache --repository http://dl-3.alpinelinux.org/alpine/edge/community/ --allow-untrusted
-RUN apk add --update tzdata
-RUN pip install --upgrade pip
-RUN pip install awscli
-RUN curl https://releases.hashicorp.com/terraform/${tf_version}/terraform_${tf_version}_linux_amd64.zip -o terraform_${tf_version}_linux_amd64.zip
-RUN unzip terraform_${tf_version}_linux_amd64.zip -d /usr/local/bin
-RUN mkdir -p /opt/workspace
+MAINTAINER marcelo correia <marcelo@correia.io>
+
+ARG terraform_version="0.12.0-beta1"
+
+RUN apk update
+
+RUN set -ex && \
+	apk add ca-certificates && update-ca-certificates && \
+	apk add --no-cache --update \
+        curl \
+        unzip \
+        bash \
+        make \
+        tree \
+        tzdata \
+        python \
+        py-pip \
+        python-dev \
+        libffi-dev \
+        build-base && \
+    pip install --upgrade pip && \
+    pip install awscli
+
+RUN mkdir -p /app
+
 RUN rm /var/cache/apk/*
 
-WORKDIR /opt/workspace
-CMD terraform version
+WORKDIR /app
+
+ENTRYPOINT ["terraform"]

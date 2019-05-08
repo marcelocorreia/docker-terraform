@@ -1,39 +1,57 @@
-# marcelocorreia/terraform
+<!-- Auto generated file, DO NOT EDIT. Please refer to README.yml -->
+# docker-terraform
 
+---
+![https://img.shields.io/docker/pulls/marcelocorreia/base-python.svg](https://img.shields.io/docker/pulls/marcelocorreia/base-python.svg)
+![https://img.shields.io/github/languages/top/marcelocorreia/docker-base-python.svg](https://img.shields.io/github/languages/top/marcelocorreia/docker-base-python.svg)
+![https://api.travis-ci.org/marcelocorreia/docker-base-python.svg?branch=master](https://api.travis-ci.org/marcelocorreia/docker-base-python.svg?branch=master)
+![https://img.shields.io/github/release/marcelocorreia/docker-base-python.svg?flat-square](https://img.shields.io/github/release/marcelocorreia/docker-base-python.svg?flat-square)
+---
+### TLDR;
+- [Overview](#overview)
+- [Description](#description)
+- [Dockerfile](#dockerfile)
+- [Usage](#usage)
+- [Setting Timezone](#setting-timezone)
+- [License](#license)
+- **Semver versioning**
+### Overview
+Docker Terraform with some extras
+
+
+### Description
 Docker image with [Hashicorp Terraform](https://www.terraform.io) + [AWS CLI](https://aws.amazon.com/cli/) + Goodies
-
-##### Github [https://github.com/marcelocorreia/docker-terraform](https://github.com/marcelocorreia/docker-terraform)
- 
 ### Packages
-    - ca-certificates 
+    - ca-certificates
     - update-ca-certificates
     - curl
-    - unzip 
-    - bash 
-    - python 
-    - py-pip 
-    - openssh 
-    - git 
-    - make 
+    - unzip
+    - bash
+    - python
+    - py-pip
+    - openssh
+    - git
+    - make
     - tzdata
-    - awscli (via PIP)  
+    - awscli (via PIP)
     - jq
- 
-## INFO
-- Workdir is set to /opt/workspace
-- Github: [https://github.com/marcelocorreia/docker-terraform](https://github.com/marcelocorreia/docker-terraform)
-- [Integration](#) with [Concourse CI](http://concourse.ci/) 
 
-## Usage
+## INFO
+- Workdir is set to /app
+
+
+
+
+### Usage
 ```bash
-$> docker run --rm -v $(pwd):/opt/workspace \
+$> docker run --rm -v $(pwd):/app \
    		marcelocorreia/terraform \
    		terraform [--version] [--help] <command> [args]
 ```
 
 ## Setting timezone
 ```bash
-$> docker run --rm -v $(pwd):/opt/workspace \
+$> docker run --rm -v $(pwd):/app \
         -e TZ=Australia/Sydney \
    		marcelocorreia/terraform \
    		terraform [--version] [--help] <command> [args]
@@ -42,87 +60,93 @@ $> docker run --rm -v $(pwd):/opt/workspace \
 
 ## Example
 ```bash
-$> docker run --rm -v $(pwd):/opt/workspace \
+$> docker run --rm -v $(pwd):/app \
    		marcelocorreia/terraform \
-   		terraform $1 -var-file variables.tfvars \
+   		terraform plan -var-file variables.tfvars \
    		-var aws_access_key=${aws_access_key_id} \
    		-var aws_secret_key=${aws_secret_access_key}
 ```
 
-## Makefile example
-```makefile
-# VARS
-TF_IMAGE?=marcelocorreia/terraform:latest
-VARS_FILE?=variables.tfvars
 
-# TF
-tf-plan:
-	$(call terraform, plan)
-.PHONY: tf-plan
 
-tf-apply:
-	$(call terraform, apply)
-.PHONY: tf-apply
 
-tf-destroy:
-	$(call terraform, destroy)
-.PHONY: tf-destroy
+## Dockerfile 
+```Dockerfile
+FROM hashicorp/terraform
 
-tf-refresh:
-	$(call terraform, refresh)
-.PHONY: tf-refresh
+MAINTAINER marcelo correia <marcelo@correia.io>
 
-tf-show:
-	$(call terraform, show)
-.PHONY: tf-show
+ARG terraform_version="0.12.0-beta1"
 
-tf-shell:
-	@docker run --rm -it -v $(shell pwd):/opt/workspace \
-    		$(TF_IMAGE)\
-    		bash
-.PHONY: tf-shell
+RUN apk update
 
-tf-state-list:
-	$(call terraform, state list)
-.PHONY: tf-show
+RUN set -ex && \
+	apk add ca-certificates && update-ca-certificates && \
+	apk add --no-cache --update \
+        curl \
+        unzip \
+        bash \
+        make \
+        tree \
+        tzdata \
+        python \
+        py-pip \
+        python-dev \
+        libffi-dev \
+        build-base && \
+    pip install --upgrade pip && \
+    pip install awscli
 
-# DOCKER
-tf-image-update:
-	docker pull $(TF_IMAGE)
-.PHONY: tf-image-update
+RUN mkdir -p /app
 
-# ROUTINES
-define terraform
-	@docker run --rm -v $(shell pwd):/opt/workspace \
-		$(TF_IMAGE)\
-		terraform $1 -var-file $(VARS_FILE) \
-		-var aws_access_key=${aws_access_key_id} \
-		-var aws_secret_key=${aws_secret_access_key}
-endef
+RUN rm /var/cache/apk/*
+
+WORKDIR /app
+
+ENTRYPOINT ["terraform"]
 
 ```
 
-### [Check the Concourse CI Pipeline used to build this image](https://github.com/marcelocorreia/docker-terraform/blob/master/pipeline.yml) 
 
-#### Concourse Build Configuration Example
+### License
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
-```yaml
-platform: linux
+Copyright [2015]
 
-image_resource:
-  type: docker-image
-  source:
-    repository: marcelocorreia/terraform
-    tag: 'latest'
+    Licensed to the Apache Software Foundation (ASF) under one
+    or more contributor license agreements.  See the NOTICE file
+    distributed with this work for additional information
+    regarding copyright ownership.  The ASF licenses this file
+    to you under the Apache License, Version 2.0 (the
+    "License"); you may not use this file except in compliance
+    with the License.  You may obtain a copy of the License at
 
-inputs:
-- name: terraform-repo
+      https://www.apache.org/licenses/LICENSE-2.0
 
-run:
-  path: terraform
-  args: 
-  - plan
-  - -var-file
-  - variables.tfvars
-```
+    Unless required by applicable law or agreed to in writing,
+    software distributed under the License is distributed on an
+    "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+    KIND, either express or implied.  See the License for the
+    specific language governing permissions and limitations
+    under the License.
+
+
+---
+[:hammer:**Created with a Hammer**:hammer:](https://github.com/marcelocorreia/hammer)
+<!-- -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

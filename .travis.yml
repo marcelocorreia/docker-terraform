@@ -1,0 +1,5 @@
+---
+language: minimal
+
+install:
+  - make docker-build

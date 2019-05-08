@@ -74,10 +74,10 @@ readme:
     ```
 
   shields:
-    - https://img.shields.io/docker/pulls/marcelocorreia/base-python.svg
-    - https://img.shields.io/github/languages/top/marcelocorreia/docker-base-python.svg
-    - https://api.travis-ci.org/marcelocorreia/docker-base-python.svg?branch=master
-    - https://img.shields.io/github/release/marcelocorreia/docker-base-python.svg?flat-square
+    - https://img.shields.io/docker/pulls/marcelocorreia/terraform.svg
+    - https://img.shields.io/github/languages/top/marcelocorreia/docker-terraform.svg
+    - https://api.travis-ci.org/marcelocorreia/docker-terraform.svg?branch=master
+    - https://img.shields.io/github/release/marcelocorreia/docker-terraform.svg?flat-square
 
   tldr:
     - '[Overview](#overview)'

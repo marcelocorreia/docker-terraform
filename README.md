@@ -2,10 +2,10 @@
 # docker-terraform
 
 ---
-![https://img.shields.io/docker/pulls/marcelocorreia/base-python.svg](https://img.shields.io/docker/pulls/marcelocorreia/base-python.svg)
-![https://img.shields.io/github/languages/top/marcelocorreia/docker-base-python.svg](https://img.shields.io/github/languages/top/marcelocorreia/docker-base-python.svg)
-![https://api.travis-ci.org/marcelocorreia/docker-base-python.svg?branch=master](https://api.travis-ci.org/marcelocorreia/docker-base-python.svg?branch=master)
-![https://img.shields.io/github/release/marcelocorreia/docker-base-python.svg?flat-square](https://img.shields.io/github/release/marcelocorreia/docker-base-python.svg?flat-square)
+![https://img.shields.io/docker/pulls/marcelocorreia/terraform.svg](https://img.shields.io/docker/pulls/marcelocorreia/terraform.svg)
+![https://img.shields.io/github/languages/top/marcelocorreia/docker-terraform.svg](https://img.shields.io/github/languages/top/marcelocorreia/docker-terraform.svg)
+![https://api.travis-ci.org/marcelocorreia/docker-terraform.svg?branch=master](https://api.travis-ci.org/marcelocorreia/docker-terraform.svg?branch=master)
+![https://img.shields.io/github/release/marcelocorreia/docker-terraform.svg?flat-square](https://img.shields.io/github/release/marcelocorreia/docker-terraform.svg?flat-square)
 ---
 ### TLDR;
 - [Overview](#overview)
@@ -76,7 +76,7 @@ FROM hashicorp/terraform
 
 MAINTAINER marcelo correia <marcelo@correia.io>
 
-ARG terraform_version="0.12.0-beta1"
+ARG terraform_version="0.11.3"
 
 RUN apk update
 

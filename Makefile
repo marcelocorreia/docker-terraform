@@ -37,6 +37,8 @@ targets:
 open-page:
 	open https://github.com/$(GITHUB_USER)/$(GIT_REPO_NAME).git
 
+grip:
+	grip -b
 
 # Internal targets
 _setup-versions:
